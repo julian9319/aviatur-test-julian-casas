@@ -35,6 +35,7 @@ class DrawingTool extends Command {
             'B'=>'FillBucket',
         ];
 
+        $this->commandFactory=new CommandFactory;
         $this->inputFile='/var/www/aviatur/var/input.txt';
         $this->outputFile='/var/www/aviatur/var/output.txt';
     }
@@ -67,6 +68,13 @@ class DrawingTool extends Command {
         $params = $this->getParamas($command);
         if (isset($this->canvasType[strtoupper($params[0])])) {
 
+            $class=$this->canvasType[strtoupper($params[0])];
+            $canvaMethod=$this->commandFactory->createMethod($class, [
+                'params'=>$params,
+                'canvas'=>$this->canvas,
+            ]);
+            
+            $canvaMethod->execute();
         } else {
             throw new \Exception ('Command option not found.');
         }
