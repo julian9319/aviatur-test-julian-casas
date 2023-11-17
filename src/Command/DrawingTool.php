@@ -45,6 +45,7 @@ class DrawingTool extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output): int {
         try {    
+            $output->section()->writeln('Command initialized');
             $commands = file($this->inputFile, FILE_IGNORE_NEW_LINES);
             foreach ($commands as $command) {
                 $params=$this->getParamas($command);
