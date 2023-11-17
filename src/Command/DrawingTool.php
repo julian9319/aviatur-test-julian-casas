@@ -35,7 +35,6 @@ class DrawingTool extends Command {
             'B'=>'FillBucket',
         ];
 
-  
         $this->inputFile='/var/www/aviatur/var/input.txt';
         $this->outputFile='/var/www/aviatur/var/output.txt';
     }
@@ -48,7 +47,11 @@ class DrawingTool extends Command {
             $commands = file($this->inputFile, FILE_IGNORE_NEW_LINES);
             foreach ($commands as $command) {
                 $params=$this->getParamas($command);
-            
+                if (strtoupper(trim($params['0'])) == 'C') {
+                    $this->canvas=DrawCanvasSingleton::getInstance((int)$params['1'], (int)$params['2']);
+                } else {
+                    $this->drawElement($command);
+                }
                 file_put_contents($this->outputFile, $this->canvas->getCanvasAsString() . PHP_EOL, FILE_APPEND);
             }
             $output->section()->writeln('The command terminated correctly. The output file was generated.');
